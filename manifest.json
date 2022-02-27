@@ -1,0 +1,16 @@
+{
+    "name": "Annotation Extension",
+    "description": "Build an Extension!",
+    "version": "0.1",
+    "manifest_version": 3,
+    //https://developer.chrome.com/docs/extensions/mv3/declare_permissions/
+	"permissions": ["activeTab", "background", "clipboardWrite", "scripting", "search", "storage", "tabs", "unlimitedStorage"],
+
+
+    "action": {
+        "default_popup": "popup.html"
+    }
+    
+
+
+  }
