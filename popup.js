@@ -22,13 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-document.addEventListener('mouseup',function(event){
-    var selectedtext = window.getSelection().toString();
-     
-    if(selectedtext.length > 0)
-        chrome.extension.sendRequest({'message':'setText','data': sel},function(response){})
-})
-
+//code not from the Chromium Authors
 document.getElementById("save-btn").onclick = async () => {
   const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
   let result;
@@ -38,7 +32,8 @@ document.getElementById("save-btn").onclick = async () => {
       function: () => getSelection().toString(),
     });
   } catch (e) {
-    return; // ignoring an unsupported page like chrome://extensions
-  }
-  document.body.append('Selection: ' + result);
+    return; 
+  chrome.storage.local.set({key: result}, function() {
+    document.body.append('Value is set to ' + result);
+  });
 };
