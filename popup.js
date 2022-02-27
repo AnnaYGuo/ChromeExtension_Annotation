@@ -3,6 +3,8 @@
 // found in the LICENSE file.
 
 'use strict';
+var list = new Array();
+var count;
 
 function click(e) {
   chrome.tabs.executeScript(null,
@@ -31,9 +33,44 @@ document.getElementById("save-btn").onclick = async () => {
       target: {tabId: tab.id},
       function: () => getSelection().toString(),
     });
-  } catch (e) {
+  } 
+  catch (e) {
     return; 
-  chrome.storage.local.set({key: result}, function() {
-    document.body.append('Value is set to ' + result);
+   }
+
+
+   chrome.storage.local.get(['index'], function(num) {
+     count = num.index;
   });
+  
+  if(Number.isInteger(count) == false){
+        count = 0;
+  }
+  else{
+     chrome.storage.local.get({key: []}, function(total) {
+        list = total.key;
+        count = list.length;
+        //document.body.append("test");
+      });
+  }
+       //document.body.append(", list length:" + count);//printf, 0 or previous num   
+       //document.body.append(", result:   " + result); //printf, result
+  list[count]=result;
+  chrome.storage.local.set({key: list}, function() {
+  
+      //document.body.append(", precount   " + count);//printf, 0 or previous num
+      chrome.storage.local.get(["key"], function(total) {
+         list = total.key;
+         //document.body.append(", check:" + list[count] + ",");
+      });
+  });
+  
+  chrome.storage.local.set({index: count + 1}, function() {
+    //document.body.append('Index is set to ' + count);
+    document.body.append("stored");
+  });
+  
+    //document.body.append(", postcount   " + count + ";");//printf whole number
+    document.body.append(document.createElement('br'));
+
 };
